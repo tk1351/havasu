@@ -1,5 +1,6 @@
 import { Entity, Unique, Column } from 'typeorm';
-import { DefaultEntity } from 'src/entity';
+import * as bcrypt from 'bcrypt';
+import { DefaultEntity } from '../../entity';
 
 @Entity({ name: 'users' })
 @Unique(['email'])
@@ -15,4 +16,12 @@ export class User extends DefaultEntity {
 
   @Column()
   salt: string;
+
+  @Column()
+  picture: string;
+
+  async validatePassword(password: string): Promise<boolean> {
+    const hash = await bcrypt.hash(password, this.salt);
+    return hash === this.password;
+  }
 }
