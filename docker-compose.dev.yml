@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      target: development
+    ports:
+      - 3000:3000
+    volumes:
+      - ./:/app
+    tty: true
+
+  api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile.dev
+      target: development
+    ports:
+      - 8080:8080
+    volumes:
+      - ./api:/api
+    tty: true
+    command: 'yarn start:dev'
+    depends_on:
+      - db
+
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    env_file:
+      - .env
+    volumes:
+      - ./postgres/pgdata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_INITDB_ARGS=${POSTGRES_INITDB_ARGS}
