@@ -5,7 +5,7 @@ import { User } from '../../users/models/users.entity';
 import { Tag } from '../../tags/models/tags.entity';
 
 @Entity({ name: 'posts' })
-export class Post extends DefaultEntity {
+export class PostEntity extends DefaultEntity {
   @Column()
   title: string;
 

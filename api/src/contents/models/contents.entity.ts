@@ -1,6 +1,6 @@
 import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { DefaultEntity } from '../../entity';
-import { Post } from '../../posts/models/posts.entity';
+import { PostEntity } from '../../posts/models/posts.entity';
 
 @Entity({ name: 'contents' })
 export class Content extends DefaultEntity {
@@ -10,11 +10,11 @@ export class Content extends DefaultEntity {
   @Column()
   text: string;
 
-  @ManyToOne(() => Post, (post) => post.contents, {
+  @ManyToOne(() => PostEntity, (post) => post.contents, {
     orphanedRowAction: 'delete',
   })
   @JoinColumn({ name: 'postId', referencedColumnName: 'id' })
-  post: Post;
+  post: PostEntity;
 
   @Column()
   postId: number;
