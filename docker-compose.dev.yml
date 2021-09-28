@@ -4,13 +4,14 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: app/Dockerfile.dev
       target: development
     ports:
       - 3000:3000
     volumes:
-      - ./:/app
+      - ./app:/app
     tty: true
+    command: 'yarn dev'
 
   api:
     build:
