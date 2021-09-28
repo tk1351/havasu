@@ -26,4 +26,8 @@ export class PostsService {
   async createPost(createPostDto: CreatePostDto, user: User): Promise<boolean> {
     return await this.postsRepository.createPost(createPostDto, user);
   }
+
+  async deletePost(id: number, user: User): Promise<boolean> {
+    return await this.postsRepository.deletePost(id, user);
+  }
 }

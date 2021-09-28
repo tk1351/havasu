@@ -2,6 +2,7 @@ import { Repository, EntityRepository, getCustomRepository } from 'typeorm';
 import {
   NotFoundException,
   InternalServerErrorException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { PostEntity } from './models/posts.entity';
 import { UsersRepository } from '../users/users.repository';
@@ -85,6 +86,30 @@ export class PostsRepository extends Repository<PostEntity> {
     } catch {
       throw new InternalServerErrorException(
         '記事投稿時にエラーが発生しました',
+      );
+    }
+  }
+
+  async deletePost(id: number, user: User): Promise<boolean> {
+    const post = await this.findOne({ id });
+
+    if (post.userId !== user.id)
+      throw new UnauthorizedException('権限がありません');
+
+    post.contents = [];
+    post.tags = [];
+
+    await this.save(post);
+    const result = await this.delete({ id });
+
+    if (result.affected === 0)
+      throw new NotFoundException(`id: ${id}の映画は存在しません`);
+
+    try {
+      return true;
+    } catch {
+      throw new InternalServerErrorException(
+        '記事の削除時にエラーが発生しました',
       );
     }
   }

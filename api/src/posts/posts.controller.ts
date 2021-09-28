@@ -1,4 +1,12 @@
-import { Controller, Get, Param, Post, Body, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Post,
+  Body,
+  UseGuards,
+  Delete,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { PostsService } from './posts.service';
 import { PostEntity } from './models/posts.entity';
@@ -31,5 +39,14 @@ export class PostsController {
     @GetCurrentUser() user: User,
   ): Promise<boolean> {
     return this.postsService.createPost(createPostDto, user);
+  }
+
+  @Delete('/delete/:id')
+  @UseGuards(AuthGuard('jwt'))
+  deletePost(
+    @Param('id') id: number,
+    @GetCurrentUser() user: User,
+  ): Promise<boolean> {
+    return this.postsService.deletePost(id, user);
   }
 }
