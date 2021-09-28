@@ -1,13 +1,35 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { PostsService } from './posts.service';
-import { Post } from './models/posts.entity';
+import { PostEntity } from './models/posts.entity';
+import { CreatePostDto } from './dto/create-post.dto';
+import { GetCurrentUser } from '../auth/get-user.decorator';
+import { User } from '../users/models/users.entity';
+import { FindPostsDto } from './dto/find-posts.dto';
 
 @Controller('posts')
 export class PostsController {
   constructor(private postsService: PostsService) {}
 
   @Get('/:id')
-  findPostsByUserId(@Param('id') userId: number): Promise<Post[]> {
-    return this.postsService.findPostsByUserId(userId);
+  findPostsByUserId(
+    @Body() findPostsDto: FindPostsDto,
+    @Param('id') userId: number,
+  ): Promise<PostEntity[]> {
+    return this.postsService.findPostsByUserId(findPostsDto, userId);
+  }
+
+  @Get('/get-one/:id')
+  findPostById(@Param('id') id: number): Promise<PostEntity> {
+    return this.postsService.findPostById(id);
+  }
+
+  @Post('/create')
+  @UseGuards(AuthGuard('jwt'))
+  createPost(
+    @Body() createPostDto: CreatePostDto,
+    @GetCurrentUser() user: User,
+  ): Promise<boolean> {
+    return this.postsService.createPost(createPostDto, user);
   }
 }
