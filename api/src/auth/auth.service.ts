@@ -9,7 +9,7 @@ export class AuthService {
     @InjectRepository(AuthRepository) private authRepository: AuthRepository,
   ) {}
 
-  async getAuthUser(user: User): Promise<User> {
+  async getAuthUser(user: any): Promise<User> {
     return await this.authRepository.getAuthUser(user);
   }
 }
