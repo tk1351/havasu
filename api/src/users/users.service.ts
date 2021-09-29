@@ -5,7 +5,6 @@ import { UsersRepository } from './users.repository';
 import { CreateUserDto } from './dto/create-user.dto';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { JwtPayload } from './types/types';
-import { jwtConstants } from '../config/constants';
 
 @Injectable()
 export class UsersService {
