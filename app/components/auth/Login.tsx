@@ -10,6 +10,7 @@ import { loginValidationSchema } from '../../src/utils/loginValidation'
 import { alertState } from '../../src/recoil/atoms/alert'
 import { LoginInputs } from '../../src/types/form'
 import { api } from '../../src/utils/api/api'
+import { isLoginState } from '../../src/recoil/atoms/isLogin'
 
 type LoginProps = {}
 
@@ -22,6 +23,7 @@ const Login: FC<LoginProps> = () => {
   const router = useRouter()
 
   const setAlert = useSetRecoilState(alertState)
+  const setIsLogin = useSetRecoilState(isLoginState)
 
   const { control, handleSubmit } = useForm<LoginInputs>({
     defaultValues,
@@ -40,6 +42,7 @@ const Login: FC<LoginProps> = () => {
   const login = async (data: LoginInputs) => {
     try {
       await api.post<{ token: string }>('/users/login', data)
+      setIsLogin(true)
       await router.push('/')
     } catch (e) {
       const msg: string = e.response.data.message

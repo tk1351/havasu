@@ -1,7 +1,7 @@
 import '../styles/globals.css'
 import { useEffect } from 'react'
 import type { AppProps } from 'next/app'
-import { RecoilRoot, useSetRecoilState } from 'recoil'
+import { RecoilRoot, useSetRecoilState, useRecoilValue } from 'recoil'
 import { ThemeProvider as StyledComponentsThemeProvider } from 'styled-components'
 import { ThemeProvider as MaterialUIThemeProvider } from '@material-ui/core/styles'
 import { StylesProvider } from '@material-ui/styles'
@@ -11,9 +11,11 @@ import Navbar from '../components/common/Navbar'
 import Alert from '../components/common/Alert'
 import { currentUserState } from '../src/recoil/atoms/currentUser'
 import { fetchCurrentUser } from '../src/utils/api/user'
+import { isLoginState } from '../src/recoil/atoms/isLogin'
 
 const AppInit = () => {
   const setCurrentUser = useSetRecoilState(currentUserState)
+  const isLogin = useRecoilValue(isLoginState)
 
   useEffect(() => {
     ;(async () => {
@@ -24,7 +26,7 @@ const AppInit = () => {
         setCurrentUser(null)
       }
     })()
-  }, [])
+  }, [isLogin])
 
   return null
 }
