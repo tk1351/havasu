@@ -13,6 +13,12 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
+  @Get('/logout')
+  async logout(@Res({ passthrough: true }) response: Response) {
+    response.cookie('token', '', { expires: new Date() });
+    return response.send(true);
+  }
+
   @Post('/create')
   createUser(@Body() createUserDto: CreateUserDto): Promise<boolean> {
     return this.usersService.createUser(createUserDto);
