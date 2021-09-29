@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { ControllerRenderProps, FormState } from 'react-hook-form'
-import { LoginInputs, InputType } from '../../src/utils/types'
 import { TextField } from '@material-ui/core'
+import { LoginInputs, InputType } from '../../src/types/form'
 
 type MuiTextFieldProps = {
   field?: ControllerRenderProps<LoginInputs, any>
