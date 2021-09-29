@@ -1,10 +1,5 @@
 import { atom } from 'recoil'
-
-export type Alert = {
-  msg: string
-  alertType: 'succeeded' | 'failed' | undefined
-  open: boolean
-}
+import { Alert } from '../../types/alert'
 
 export const alertState = atom<Alert>({
   key: 'alertState',
