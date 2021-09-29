@@ -8,6 +8,7 @@ import { StylesProvider } from '@material-ui/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import theme from '../src/theme'
 import Navbar from '../components/common/Navbar'
+import Alert from '../components/common/Alert'
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   useEffect(() => {
@@ -24,6 +25,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
             <CssBaseline />
             <Navbar />
             <Component {...pageProps} />
+            <Alert />
           </StyledComponentsThemeProvider>
         </MaterialUIThemeProvider>
       </StylesProvider>
