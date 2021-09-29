@@ -28,6 +28,11 @@ const Navbar: FC<NavbarProps> = () => {
         </Link>
       </li>
       <li>
+        <Link href="/posts/new">
+          <a>Add new</a>
+        </Link>
+      </li>
+      <li>
         <button onClick={logout}>Logout</button>
       </li>
     </>
