@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsOptional, IsInt } from 'class-validator';
+import { IsNotEmpty, IsString, IsOptional, IsNumber } from 'class-validator';
 
 export class CreateTagDto {
   @IsNotEmpty()
@@ -6,6 +6,6 @@ export class CreateTagDto {
   name: string;
 
   @IsOptional()
-  @IsInt()
+  @IsNumber()
   postId: number;
 }

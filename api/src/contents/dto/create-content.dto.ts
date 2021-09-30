@@ -1,8 +1,8 @@
-import { IsNotEmpty, IsInt, IsString, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsString, IsOptional, IsNumber } from 'class-validator';
 
 export class CreateContentDto {
   @IsNotEmpty()
-  @IsInt()
+  @IsNumber()
   category: number;
 
   @IsNotEmpty()
@@ -10,6 +10,6 @@ export class CreateContentDto {
   text: string;
 
   @IsOptional()
-  @IsInt()
+  @IsNumber()
   postId: number;
 }
