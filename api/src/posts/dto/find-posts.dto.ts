@@ -1,11 +1,11 @@
-import { IsNotEmpty, IsInt } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 
 export class FindPostsDto {
+  @IsOptional()
   @IsNotEmpty()
-  @IsInt()
   offset: number;
 
+  @IsOptional()
   @IsNotEmpty()
-  @IsInt()
   limit: number;
 }

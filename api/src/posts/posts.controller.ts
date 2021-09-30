@@ -6,6 +6,7 @@ import {
   Body,
   UseGuards,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { PostsService } from './posts.service';
@@ -21,7 +22,7 @@ export class PostsController {
 
   @Get('/:id')
   findPostsByUserId(
-    @Body() findPostsDto: FindPostsDto,
+    @Query() findPostsDto: FindPostsDto,
     @Param('id') userId: number,
   ): Promise<PostEntity[]> {
     return this.postsService.findPostsByUserId(findPostsDto, userId);
