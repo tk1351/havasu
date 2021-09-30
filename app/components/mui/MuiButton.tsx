@@ -7,6 +7,7 @@ type MuiButtonProps = {
   color?: 'inherit' | 'primary' | 'secondary' | 'default' | undefined
   className?: string
   label: string
+  onClick?: () => void
 }
 
 const MuiButton: FC<MuiButtonProps> = ({
@@ -15,9 +16,16 @@ const MuiButton: FC<MuiButtonProps> = ({
   color,
   className,
   label,
+  onClick,
 }) => {
   return (
-    <Button type={type} variant={variant} color={color} className={className}>
+    <Button
+      type={type}
+      variant={variant}
+      color={color}
+      className={className}
+      onClick={onClick}
+    >
       {label}
     </Button>
   )
