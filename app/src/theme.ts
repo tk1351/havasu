@@ -1,8 +1,8 @@
-import { unstable_createMuiStrictModeTheme as createTheme } from '@material-ui/core/styles'
+import { createTheme } from '@mui/material/styles'
 
 const theme = createTheme({
   palette: {
-    type: 'dark',
+    mode: 'dark',
   },
 })
 

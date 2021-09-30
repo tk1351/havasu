@@ -1,57 +1,26 @@
 import '../styles/globals.css'
-import { useEffect } from 'react'
 import type { AppProps } from 'next/app'
-import { RecoilRoot, useSetRecoilState, useRecoilValue } from 'recoil'
-import { ThemeProvider as StyledComponentsThemeProvider } from 'styled-components'
-import { ThemeProvider as MaterialUIThemeProvider } from '@material-ui/core/styles'
-import { StylesProvider } from '@material-ui/styles'
-import CssBaseline from '@material-ui/core/CssBaseline'
+import { ThemeProvider } from '@mui/material/styles'
+import CssBaseline from '@mui/material/CssBaseline'
+import { CacheProvider, EmotionCache } from '@emotion/react'
+import createEmotionCache from '../src/createEmotionCache'
 import theme from '../src/theme'
-import Navbar from '../components/common/Navbar'
-import Alert from '../components/common/Alert'
-import { currentUserState } from '../src/recoil/atoms/currentUser'
-import { fetchCurrentUser } from '../src/utils/api/user'
-import { isLoginState } from '../src/recoil/atoms/isLogin'
 
-const AppInit = () => {
-  const setCurrentUser = useSetRecoilState(currentUserState)
-  const isLogin = useRecoilValue(isLoginState)
+const clientSideEmotionCache = createEmotionCache()
 
-  useEffect(() => {
-    ;(async () => {
-      try {
-        const res = await fetchCurrentUser()
-        setCurrentUser(res.data)
-      } catch {
-        setCurrentUser(null)
-      }
-    })()
-  }, [isLogin])
-
-  return null
+interface MyAppProps extends AppProps {
+  emotionCache?: EmotionCache
 }
 
-const MyApp = ({ Component, pageProps }: AppProps) => {
-  useEffect(() => {
-    const jssStyles = document.querySelector('#jss-server-side')
-    if (jssStyles) {
-      jssStyles.parentElement?.removeChild(jssStyles)
-    }
-  }, [])
+const MyApp = (props: MyAppProps) => {
+  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
   return (
-    <RecoilRoot>
-      <StylesProvider injectFirst>
-        <MaterialUIThemeProvider theme={theme}>
-          <StyledComponentsThemeProvider theme={theme}>
-            <CssBaseline />
-            <Navbar />
-            <Component {...pageProps} />
-            <Alert />
-            <AppInit />
-          </StyledComponentsThemeProvider>
-        </MaterialUIThemeProvider>
-      </StylesProvider>
-    </RecoilRoot>
+    <CacheProvider value={emotionCache}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Component {...pageProps} />
+      </ThemeProvider>
+    </CacheProvider>
   )
 }
 export default MyApp
