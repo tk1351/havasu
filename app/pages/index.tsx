@@ -1,10 +1,14 @@
-import type { NextPage } from 'next'
+import { NextPage, InferGetStaticPropsType } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
+import axios from 'axios'
 import styles from '../styles/Home.module.css'
 import Home from '../components/Home'
+import { IPost } from '../src/types/post'
+import { offset, limit, authorId } from '../src/utils/api/api'
+import Posts from '../components/posts/Posts'
 
-const index: NextPage = () => {
+const index: NextPage<Props> = ({ posts }) => {
   return (
     <div className={styles.container}>
       <Head>
@@ -14,6 +18,7 @@ const index: NextPage = () => {
       </Head>
 
       <Home />
+      <Posts posts={posts} />
 
       <footer className={styles.footer}>
         <a
@@ -30,5 +35,16 @@ const index: NextPage = () => {
     </div>
   )
 }
+
+export const getStaticProps = async () => {
+  const url = `${process.env.API_URL}/posts/${authorId}?offset=${offset}&limit=${limit}`
+
+  const res = await axios.get<IPost[]>(url)
+  return {
+    props: { posts: res.data },
+  }
+}
+
+type Props = InferGetStaticPropsType<typeof getStaticProps>
 
 export default index
