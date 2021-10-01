@@ -42,8 +42,7 @@ export class PostsRepository extends Repository<PostEntity> {
   async findPostById(id: number): Promise<PostEntity> {
     const post = await this.leftJoin()
       .where('posts.id = :id', { id })
-      .orderBy('contents.id', 'ASC')
-      .addOrderBy('tags.id', 'ASC')
+      .orderBy('tags.id', 'ASC')
       .getOne();
 
     if (!post) throw new NotFoundException(`id: ${id}の記事はありません`);
