@@ -3,6 +3,12 @@ export type LoginInputs = {
   password: string
 }
 
+export type PostInputs = {
+  title: string
+  content: string
+  tags: { name: string }[]
+}
+
 export type InputType =
   | 'number'
   | 'button'
