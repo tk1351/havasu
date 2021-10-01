@@ -6,12 +6,11 @@ import { CreateContentDto } from './dto/create-content.dto';
 @EntityRepository(Content)
 export class ContentsRepository extends Repository<Content> {
   async createContent(createContentDto: CreateContentDto): Promise<Content> {
-    const { category, text, postId } = createContentDto;
+    const { category, text } = createContentDto;
 
     const content = this.create();
     content.category = category;
     content.text = text;
-    content.postId = postId;
 
     await content.save();
 
