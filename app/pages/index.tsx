@@ -1,10 +1,13 @@
-import type { NextPage } from 'next'
+import type { NextPage, InferGetStaticPropsType } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
+import axios from 'axios'
 import Navbar from '../components/common/Navbar'
 import Home from '../components/Home'
+import { offset, limit } from '../src/api/api'
+import { IPost } from '../src/types/post'
 
-const index: NextPage = () => {
+const index: NextPage<Props> = ({ posts }) => {
   return (
     <div>
       <Head>
@@ -13,7 +16,7 @@ const index: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar />
-      <Home />
+      <Home posts={posts} />
       <footer>
         <a
           href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
@@ -29,5 +32,16 @@ const index: NextPage = () => {
     </div>
   )
 }
+
+export const getStaticProps = async () => {
+  const url = `${process.env.API_URL}/posts/${process.env.AUTHOR_ID}?offset=${offset}&limit=${limit}`
+  const res = await axios.get<IPost[]>(url)
+
+  return {
+    props: { posts: res.data },
+  }
+}
+
+type Props = InferGetStaticPropsType<typeof getStaticProps>
 
 export default index
