@@ -1,25 +1,29 @@
 import React, { FC } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { Box, AppBar, Toolbar, Typography } from '@mui/material'
-import { useRecoilValue } from 'recoil'
-import { isLoginState } from '../../recoil/atoms/isLogin'
+import { useSetRecoilState } from 'recoil'
 import MuiButton from '../mui/MuiButton'
-import { currentUserState } from '../../recoil/atoms/currentUser'
+import { useCurrentUser } from '../../hooks/useCurrentUser'
+import { isLoginState } from '../../recoil/atoms/isLogin'
+import api from '../../src/api/api'
 
 type NavbarProps = {}
 
 const Navbar: FC<NavbarProps> = () => {
-  const currentUser = useRecoilValue(currentUserState)
+  const router = useRouter()
+
+  const { currentUser } = useCurrentUser()
+  const setIsLogin = useSetRecoilState(isLoginState)
 
   const logout = async () => {
-    console.log('logout')
+    await api.get<boolean>('/users/logout')
+    setIsLogin(false)
+    await router.push('/')
   }
 
   const visitorLinks = (
     <>
-      <Link href="/">
-        <a>Home</a>
-      </Link>
       <Link href="/login">
         <a>Login</a>
       </Link>
@@ -28,8 +32,8 @@ const Navbar: FC<NavbarProps> = () => {
 
   const authorLinks = (
     <>
-      <Link href="/">
-        <a>Home</a>
+      <Link href="/posts/new">
+        <a>Add new</a>
       </Link>
       <MuiButton
         variant="text"
@@ -46,7 +50,9 @@ const Navbar: FC<NavbarProps> = () => {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" noWrap component="div">
-            {process.env.NEXT_PUBLIC_APP_NAME}
+            <Link href="/">
+              <a>{process.env.NEXT_PUBLIC_APP_NAME}</a>
+            </Link>
           </Typography>
           {currentUser ? authorLinks : visitorLinks}
         </Toolbar>
