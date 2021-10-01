@@ -12,6 +12,9 @@ type MuiTextFieldProps = {
   type: InputType
   helperText?: any
   error?: boolean
+  multiline?: boolean
+  rows?: number
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 const MuiTextField: FC<MuiTextFieldProps> = ({
@@ -23,6 +26,9 @@ const MuiTextField: FC<MuiTextFieldProps> = ({
   type,
   helperText,
   error,
+  multiline,
+  rows,
+  onChange,
 }) => {
   return (
     <TextField
@@ -34,6 +40,9 @@ const MuiTextField: FC<MuiTextFieldProps> = ({
       type={type}
       helperText={helperText}
       error={error}
+      multiline={multiline}
+      rows={rows}
+      onChange={onChange}
     />
   )
 }
