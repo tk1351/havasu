@@ -1,5 +1,4 @@
 import { IsNotEmpty, IsString, IsOptional } from 'class-validator';
-import { CreateContentDto } from '../../contents/dto/create-content.dto';
 import { CreateTagDto } from '../../tags/dto/create-tag.dto';
 
 export class CreatePostDto {
@@ -8,7 +7,8 @@ export class CreatePostDto {
   title: string;
 
   @IsNotEmpty()
-  contents: CreateContentDto[];
+  @IsString()
+  content: string;
 
   @IsOptional()
   @IsNotEmpty()

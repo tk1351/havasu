@@ -23,7 +23,7 @@ export class PostsService {
     return await this.postsRepository.findPostById(id);
   }
 
-  async createPost(createPostDto: CreatePostDto, user: User): Promise<boolean> {
+  async createPost(createPostDto: CreatePostDto, user: any): Promise<boolean> {
     return await this.postsRepository.createPost(createPostDto, user);
   }
 

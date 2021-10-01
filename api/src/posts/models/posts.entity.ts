@@ -1,6 +1,5 @@
 import { Entity, Column, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
 import { DefaultEntity } from '../../entity';
-import { Content } from '../../contents/models/contents.entity';
 import { User } from '../../users/models/users.entity';
 import { Tag } from '../../tags/models/tags.entity';
 
@@ -10,10 +9,10 @@ export class PostEntity extends DefaultEntity {
   title: string;
 
   @Column()
-  liked: number;
+  content: string;
 
-  @OneToMany(() => Content, (contents) => contents.post)
-  contents: Content[];
+  @Column()
+  liked: number;
 
   @OneToMany(() => Tag, (tags) => tags.post)
   tags: Tag[];

@@ -7,7 +7,6 @@ import {
 import { PostEntity } from './models/posts.entity';
 import { UsersRepository } from '../users/users.repository';
 import { CreatePostDto } from './dto/create-post.dto';
-import { ContentsRepository } from '../contents/contents.repository';
 import { TagsRepository } from '../tags/tagsRepository';
 import { User } from '../users/models/users.entity';
 import { FindPostsDto } from './dto/find-posts.dto';
@@ -58,26 +57,18 @@ export class PostsRepository extends Repository<PostEntity> {
     }
   }
 
-  async createPost(createPostDto: CreatePostDto, user: User): Promise<boolean> {
-    const contentsRepository = getCustomRepository(ContentsRepository);
+  async createPost(createPostDto: CreatePostDto, user: any): Promise<boolean> {
     const tagsRepository = getCustomRepository(TagsRepository);
 
-    const { title, contents, tags } = createPostDto;
+    const { title, content, tags } = createPostDto;
 
     const post = this.create();
     post.title = title;
+    post.content = content;
     post.liked = 0;
     post.user = user;
 
     const newPost = await post.save();
-
-    contents.map((content) =>
-      contentsRepository.createContent({
-        category: content.category,
-        text: content.text,
-        postId: newPost.id,
-      }),
-    );
 
     if (tags) {
       tags.map((tag) =>
@@ -100,7 +91,6 @@ export class PostsRepository extends Repository<PostEntity> {
     if (post.userId !== user.id)
       throw new UnauthorizedException('権限がありません');
 
-    post.contents = [];
     post.tags = [];
 
     await this.save(post);
@@ -119,8 +109,9 @@ export class PostsRepository extends Repository<PostEntity> {
   }
 
   private leftJoin() {
-    return this.createQueryBuilder('posts')
-      .leftJoinAndSelect('posts.tags', 'tags')
-      .leftJoinAndSelect('posts.contents', 'contents');
+    return this.createQueryBuilder('posts').leftJoinAndSelect(
+      'posts.tags',
+      'tags',
+    );
   }
 }

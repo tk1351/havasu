@@ -7,8 +7,10 @@ import {
   UseGuards,
   Delete,
   Query,
+  Req,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { Request } from 'express';
 import { PostsService } from './posts.service';
 import { PostEntity } from './models/posts.entity';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -37,8 +39,10 @@ export class PostsController {
   @UseGuards(AuthGuard('jwt'))
   createPost(
     @Body() createPostDto: CreatePostDto,
-    @GetCurrentUser() user: User,
+    @Req() request: Request,
   ): Promise<boolean> {
+    const user = request.user;
+    console.log('user', user);
     return this.postsService.createPost(createPostDto, user);
   }
 
