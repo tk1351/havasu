@@ -55,6 +55,7 @@ const Login: FC<LoginProps> = () => {
               variant="outlined"
               type="text"
               field={field}
+              onChange={field.onChange}
             />
           )}
         />
@@ -67,6 +68,7 @@ const Login: FC<LoginProps> = () => {
               variant="outlined"
               type="password"
               field={field}
+              onChange={field.onChange}
             />
           )}
         />
