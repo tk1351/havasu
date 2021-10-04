@@ -15,6 +15,7 @@ type MuiTextFieldProps = {
   multiline?: boolean
   rows?: number
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+  fullWidth?: boolean
 }
 
 const MuiTextField: FC<MuiTextFieldProps> = ({
@@ -29,6 +30,7 @@ const MuiTextField: FC<MuiTextFieldProps> = ({
   multiline,
   rows,
   onChange,
+  fullWidth,
 }) => {
   return (
     <TextField
@@ -43,6 +45,7 @@ const MuiTextField: FC<MuiTextFieldProps> = ({
       multiline={multiline}
       rows={rows}
       onChange={onChange}
+      fullWidth={fullWidth}
     />
   )
 }

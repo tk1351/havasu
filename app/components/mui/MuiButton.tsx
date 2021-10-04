@@ -16,6 +16,7 @@ type MuiButtonProps = {
   label: string
   className?: string
   onClick?: () => void
+  fullWidth?: boolean
 }
 
 const MuiButton: FC<MuiButtonProps> = ({
@@ -25,6 +26,7 @@ const MuiButton: FC<MuiButtonProps> = ({
   label,
   className,
   onClick,
+  fullWidth,
 }) => {
   return (
     <Button
@@ -33,6 +35,7 @@ const MuiButton: FC<MuiButtonProps> = ({
       onClick={onClick}
       type={type}
       className={className}
+      fullWidth={fullWidth}
     >
       {label}
     </Button>
