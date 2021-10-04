@@ -7,6 +7,7 @@ import MuiButton from '../mui/MuiButton'
 import { useCurrentUser } from '../../hooks/useCurrentUser'
 import { isLoginState } from '../../recoil/atoms/isLogin'
 import api from '../../src/api/api'
+import { styles } from '../../styles/components/common/navbar.styles'
 
 type NavbarProps = {}
 
@@ -22,16 +23,18 @@ const Navbar: FC<NavbarProps> = () => {
     await router.push('/')
   }
 
+  const { links, toolbar } = styles
+
   const visitorLinks = (
-    <>
+    <div css={links}>
       <Link href="/login">
         <a>Login</a>
       </Link>
-    </>
+    </div>
   )
 
   const authorLinks = (
-    <>
+    <div css={links}>
       <Link href="/posts/new">
         <a>Add new</a>
       </Link>
@@ -42,13 +45,13 @@ const Navbar: FC<NavbarProps> = () => {
         type="button"
         onClick={logout}
       />
-    </>
+    </div>
   )
 
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
-        <Toolbar>
+        <Toolbar css={toolbar}>
           <Typography variant="h6" noWrap component="div">
             <Link href="/">
               <a>{process.env.NEXT_PUBLIC_APP_NAME}</a>
