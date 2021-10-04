@@ -11,8 +11,8 @@ const PostTags: FC<PostTagsProps> = ({ tags }) => {
   return (
     <Stack direction="row" spacing={1}>
       {tags.map((tag) => (
-        <Link href="/">
-          <Chip key={tag.id} label={tag.name} component="a" clickable />
+        <Link href="/" key={tag.id}>
+          <Chip label={tag.name} component="a" clickable />
         </Link>
       ))}
     </Stack>
