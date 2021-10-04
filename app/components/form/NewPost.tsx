@@ -6,12 +6,15 @@ import {
   useFieldArray,
 } from 'react-hook-form'
 import { useSetRecoilState } from 'recoil'
+import { Grid } from '@mui/material'
 import MuiTextField from '../mui/MuiTextField'
 import { PostInputs } from '../../src/types/input'
 import MuiButton from '../mui/MuiButton'
 import PostPreview from './PostPreview'
 import { registerPost } from '../../src/api/post'
 import { alertState } from '../../recoil/atoms/alert'
+import MarkdownCheatSheet from './MarkdownCheatSheet'
+import { styles } from '../../styles/components/form/newPost.styles'
 
 type NewPostProps = {}
 
@@ -23,6 +26,7 @@ const defaultValues: PostInputs = {
 
 const NewPost: FC<NewPostProps> = () => {
   const [markdown, setMarkdown] = useState<string>('')
+
   const setAlert = useSetRecoilState(alertState)
 
   const { control, handleSubmit } = useForm<PostInputs>({
@@ -51,85 +55,105 @@ const NewPost: FC<NewPostProps> = () => {
       openAlert(e.response.data.message, 'failed')
     }
   }
+
+  const { header, textField, button, li } = styles
+
   return (
-    <div>
-      <h1>New Post</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Controller
-          name="title"
-          control={control}
-          render={({ field }) => (
-            <MuiTextField
-              field={field}
-              label="Title"
-              variant="outlined"
-              type="text"
-              onChange={field.onChange}
-            />
-          )}
-        />
-        <Controller
-          name="content"
-          control={control}
-          render={({ field }) => (
-            <MuiTextField
-              field={field}
-              onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                setContent(e)
-                field.onChange(e)
-              }}
-              label="Content"
-              multiline={true}
-              rows={10}
-              variant="outlined"
-              type="text"
-            />
-          )}
-        />
-        <ul>
-          {fields.map((field, i) => (
-            <li key={field.id}>
+    <>
+      <Grid container justifyContent="center" css={header}>
+        <h1>New Post</h1>
+        <MarkdownCheatSheet />
+      </Grid>
+      <Grid container spacing={2}>
+        <Grid item xs={6}>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div css={textField}>
               <Controller
-                name={`tags.${i}.name`}
+                name="title"
                 control={control}
                 render={({ field }) => (
                   <MuiTextField
                     field={field}
-                    label="Tag"
+                    label="Title"
                     variant="outlined"
                     type="text"
                     onChange={field.onChange}
+                    fullWidth
                   />
                 )}
               />
+            </div>
+            <div css={textField}>
+              <Controller
+                name="content"
+                control={control}
+                render={({ field }) => (
+                  <MuiTextField
+                    field={field}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                      setContent(e)
+                      field.onChange(e)
+                    }}
+                    label="Content"
+                    multiline={true}
+                    rows={10}
+                    variant="outlined"
+                    type="text"
+                    fullWidth
+                  />
+                )}
+              />
+            </div>
+            <ul>
+              {fields.map((field, i) => (
+                <li key={field.id} css={li}>
+                  <Controller
+                    name={`tags.${i}.name`}
+                    control={control}
+                    render={({ field }) => (
+                      <MuiTextField
+                        field={field}
+                        label="Tag"
+                        variant="outlined"
+                        type="text"
+                        onChange={field.onChange}
+                      />
+                    )}
+                  />
+                  <MuiButton
+                    variant="contained"
+                    color="secondary"
+                    label="Remove"
+                    type="button"
+                    onClick={() => remove(i)}
+                  />
+                </li>
+              ))}
+            </ul>
+            <MuiButton
+              variant="contained"
+              color="primary"
+              label="Append"
+              type="button"
+              onClick={() => append({ name: '' })}
+              css={button}
+            />
+            <div>
               <MuiButton
                 variant="contained"
-                color="secondary"
-                label="Remove"
-                type="button"
-                onClick={() => remove(i)}
+                color="primary"
+                label="Add"
+                type="submit"
+                fullWidth
               />
-            </li>
-          ))}
-        </ul>
-        <MuiButton
-          variant="contained"
-          color="primary"
-          label="Append"
-          type="button"
-          onClick={() => append({ name: '' })}
-        />
-        <div>
-          <MuiButton
-            variant="contained"
-            color="primary"
-            label="Add"
-            type="submit"
-          />
-        </div>
-      </form>
-      <PostPreview content={markdown} />
-    </div>
+            </div>
+          </form>
+        </Grid>
+        <Grid item xs={6}>
+          <PostPreview content={markdown} />
+        </Grid>
+      </Grid>
+    </>
   )
 }
 
