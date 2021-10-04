@@ -1,12 +1,20 @@
 import React, { FC } from 'react'
-import ReactMarkdown from 'react-markdown'
+import ReactMarkDown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import CodeBlock from '../form/CodeBlock'
 
 type PostContentProps = {
   content: string
 }
 
 const PostContent: FC<PostContentProps> = ({ content }) => {
-  return <ReactMarkdown>{content}</ReactMarkdown>
+  return (
+    <ReactMarkDown
+      children={content}
+      remarkPlugins={[remarkGfm]}
+      components={{ code: CodeBlock }}
+    />
+  )
 }
 
 export default PostContent
