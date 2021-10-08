@@ -21,8 +21,8 @@ const postId: NextPage<Props> = ({ post }) => {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const url = `${process.env.API_URL}/posts/${process.env.AUTHOR_ID}`
-  const res = await axios.get<IPost[]>(url)
-  const posts = res.data
+  const res = await axios.get<[IPost[], number]>(url)
+  const posts = res.data[0]
 
   const paths = posts.map((post) => ({
     params: { postId: post.id.toString() },
