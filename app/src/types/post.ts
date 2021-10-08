@@ -9,3 +9,7 @@ export interface IPost extends DefaultType {
 export interface ITag extends DefaultType {
   name: string
 }
+
+export type Query = {
+  query: string
+}

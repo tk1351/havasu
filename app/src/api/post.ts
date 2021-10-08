@@ -12,3 +12,10 @@ export const fetchPosts = async (tag: string) => {
   )}`
   return await api.get<[IPost[], number]>(url)
 }
+
+export const fetchSearchResult = async (query: string) => {
+  const url = `/posts/${authorId}?offset=${offset}&limit=${limit}&query=${encodeURI(
+    query
+  )}`
+  return await api.get<[IPost[], number]>(url)
+}
