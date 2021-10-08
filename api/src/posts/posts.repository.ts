@@ -7,7 +7,7 @@ import {
 import { PostEntity } from './models/posts.entity';
 import { UsersRepository } from '../users/users.repository';
 import { CreatePostDto } from './dto/create-post.dto';
-import { TagsRepository } from '../tags/tagsRepository';
+import { TagsRepository } from '../tags/tags.repository';
 import { User } from '../users/models/users.entity';
 import { FindPostsDto } from './dto/find-posts.dto';
 
