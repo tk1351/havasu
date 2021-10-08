@@ -16,19 +16,31 @@ export class PostsRepository extends Repository<PostEntity> {
   async findPostsByUserId(
     findPostsDto: FindPostsDto,
     userId: number,
-  ): Promise<PostEntity[]> {
+  ): Promise<[PostEntity[], number]> {
     const usersRepository = getCustomRepository(UsersRepository);
     const user = await usersRepository.findOne({ id: userId });
     if (!user) throw new NotFoundException('ユーザーが存在しません');
 
-    const { offset, limit } = findPostsDto;
+    const { offset, limit, tag } = findPostsDto;
 
     const posts = await this.leftJoin()
       .where('posts.userId = :userId', { userId: user.id })
+      .andWhere(
+        tag
+          ? (qb) =>
+              'posts.id IN' +
+              qb
+                .subQuery()
+                .select('tags.postId')
+                .from('tags', 'tags')
+                .where('tags.name = :tag', { tag })
+                .getQuery()
+          : 'true',
+      )
       .skip(offset)
       .take(limit)
       .orderBy('posts.id', 'DESC')
-      .getMany();
+      .getManyAndCount();
 
     try {
       return posts;

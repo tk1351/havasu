@@ -15,7 +15,7 @@ export class PostsService {
   async findPostsByUserId(
     findPostsDto: FindPostsDto,
     userId: number,
-  ): Promise<PostEntity[]> {
+  ): Promise<[PostEntity[], number]> {
     return await this.postsRepository.findPostsByUserId(findPostsDto, userId);
   }
 

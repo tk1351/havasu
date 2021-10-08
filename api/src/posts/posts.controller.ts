@@ -26,7 +26,7 @@ export class PostsController {
   findPostsByUserId(
     @Query() findPostsDto: FindPostsDto,
     @Param('id') userId: number,
-  ): Promise<PostEntity[]> {
+  ): Promise<[PostEntity[], number]> {
     return this.postsService.findPostsByUserId(findPostsDto, userId);
   }
 
@@ -42,7 +42,6 @@ export class PostsController {
     @Req() request: Request,
   ): Promise<boolean> {
     const user = request.user;
-    console.log('user', user);
     return this.postsService.createPost(createPostDto, user);
   }
 
