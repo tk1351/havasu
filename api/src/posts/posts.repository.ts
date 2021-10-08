@@ -25,9 +25,12 @@ export class PostsRepository extends Repository<PostEntity> {
 
     const posts = await this.leftJoin()
       .where('posts.userId = :userId', { userId: user.id })
-      .andWhere('posts.title LIKE :query OR posts.content LIKE :query', {
-        query: `%${query}%`,
-      })
+      .andWhere(
+        query ? 'posts.title LIKE :query OR posts.content LIKE :query' : 'true',
+        {
+          query: `%${query}%`,
+        },
+      )
       .andWhere(
         tag
           ? (qb) =>
