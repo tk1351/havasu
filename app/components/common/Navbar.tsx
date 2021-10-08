@@ -8,6 +8,7 @@ import { useCurrentUser } from '../../hooks/useCurrentUser'
 import { isLoginState } from '../../recoil/atoms/isLogin'
 import api from '../../src/api/api'
 import { styles } from '../../styles/components/common/navbar.styles'
+import SearchForm from '../form/SearchForm'
 
 type NavbarProps = {}
 
@@ -27,6 +28,7 @@ const Navbar: FC<NavbarProps> = () => {
 
   const visitorLinks = (
     <div css={links}>
+      <SearchForm />
       <Link href="/login">
         <a>Login</a>
       </Link>
