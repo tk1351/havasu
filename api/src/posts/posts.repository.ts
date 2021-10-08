@@ -21,10 +21,13 @@ export class PostsRepository extends Repository<PostEntity> {
     const user = await usersRepository.findOne({ id: userId });
     if (!user) throw new NotFoundException('ユーザーが存在しません');
 
-    const { offset, limit, tag } = findPostsDto;
+    const { offset, limit, query, tag } = findPostsDto;
 
     const posts = await this.leftJoin()
       .where('posts.userId = :userId', { userId: user.id })
+      .andWhere('posts.title LIKE :query OR posts.content LIKE :query', {
+        query: `%${query}%`,
+      })
       .andWhere(
         tag
           ? (qb) =>
