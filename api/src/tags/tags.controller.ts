@@ -1,7 +1,8 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { TagsService } from './tags.service';
 import { Tag } from './models/tags.entity';
 import { GetCountTagsReturnType } from './types/type';
+import { FindTagsDto } from './dto/find-tags.dto';
 
 @Controller('tags')
 export class TagsController {
@@ -13,7 +14,10 @@ export class TagsController {
   }
 
   @Get('/count/:id')
-  getCountTags(@Param('id') userId: number): Promise<GetCountTagsReturnType[]> {
-    return this.tagsService.getCountTags(userId);
+  getCountTags(
+    @Query() findTagsDto: FindTagsDto,
+    @Param('id') userId: number,
+  ): Promise<GetCountTagsReturnType[]> {
+    return this.tagsService.getCountTags(findTagsDto, userId);
   }
 }

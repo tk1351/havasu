@@ -6,6 +6,7 @@ import { Repository, EntityRepository } from 'typeorm';
 import { Tag } from './models/tags.entity';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { GetCountTagsReturnType } from './types/type';
+import { FindTagsDto } from './dto/find-tags.dto';
 
 @EntityRepository(Tag)
 export class TagsRepository extends Repository<Tag> {
@@ -18,9 +19,15 @@ export class TagsRepository extends Repository<Tag> {
     return tags;
   }
 
-  async getCountTags(userId: number): Promise<GetCountTagsReturnType[]> {
+  async getCountTags(
+    findTagsDto: FindTagsDto,
+    userId: number,
+  ): Promise<GetCountTagsReturnType[]> {
+    const { limit } = findTagsDto;
+
     const tags = await this.findAllByUserId(userId)
       .select(['tags.name', 'COUNT(*) AS cnt'])
+      .limit(limit)
       .groupBy('tags.name')
       .orderBy('cnt', 'DESC')
       .getRawMany<GetCountTagsReturnType>();
