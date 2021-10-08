@@ -6,8 +6,9 @@ import Navbar from '../components/common/Navbar'
 import Home from '../components/Home'
 import { offset, limit } from '../src/api/api'
 import { IPost } from '../src/types/post'
+import { CountTag } from '../src/types/tag'
 
-const index: NextPage<Props> = ({ posts }) => {
+const index: NextPage<Props> = ({ posts, postCount, tags }) => {
   return (
     <div>
       <Head>
@@ -16,7 +17,7 @@ const index: NextPage<Props> = ({ posts }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar />
-      <Home posts={posts} />
+      <Home posts={posts} postCount={postCount} tags={tags} />
       <footer>
         <a
           href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
@@ -34,11 +35,19 @@ const index: NextPage<Props> = ({ posts }) => {
 }
 
 export const getStaticProps = async () => {
-  const url = `${process.env.API_URL}/posts/${process.env.AUTHOR_ID}?offset=${offset}&limit=${limit}`
-  const res = await axios.get<IPost[]>(url)
+  const postUrl = `${process.env.API_URL}/posts/${process.env.AUTHOR_ID}?offset=${offset}&limit=${limit}`
+
+  const tagUrl = `${process.env.API_URL}/tags/count/${process.env.AUTHOR_ID}?limit=${limit}`
+
+  const postRes = await axios.get<[IPost[], number]>(postUrl)
+  const tagRes = await axios.get<CountTag[]>(tagUrl)
 
   return {
-    props: { posts: res.data },
+    props: {
+      posts: postRes.data[0],
+      postCount: postRes.data[1],
+      tags: tagRes.data,
+    },
   }
 }
 
