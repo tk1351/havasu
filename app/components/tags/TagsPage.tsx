@@ -1,30 +1,20 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC } from 'react'
 import { useRouter } from 'next/router'
 import { Grid } from '@mui/material'
-import { fetchPosts } from '../../src/api/post'
-import { IPost } from '../../src/types/post'
 import PostItem from '../posts/PostItem'
 import Tags from './Tags'
 import { CountTag } from '../../src/types/tag'
+import { usePostsAndCount } from '../../hooks/usePostsAndCount'
 
 type TagsPageProps = {
   tags: CountTag[]
 }
 
 const TagsPage: FC<TagsPageProps> = ({ tags }) => {
-  const [posts, setPosts] = useState<IPost[]>([])
-  const [count, setCount] = useState<number>(0)
-
   const router = useRouter()
   const tag = router.query?.tag as string
 
-  useEffect(() => {
-    ;(async () => {
-      const res = await fetchPosts(tag)
-      setPosts(res.data[0])
-      setCount(res.data[1])
-    })()
-  }, [tag])
+  const { posts, count } = usePostsAndCount('tag', tag)
 
   return (
     <Grid container spacing={2}>
