@@ -8,11 +8,11 @@ import {
   TableCell,
   TableBody,
 } from '@mui/material'
-import { MarkDown } from '../../src/types/markdown'
+import { TableElements } from '../../src/types/table'
 import { tableContainer } from '../../styles/components/mui/muiTable.styles'
 
 type MuiTableProps = {
-  element: MarkDown
+  element: TableElements
 }
 
 const MuiTable: FC<MuiTableProps> = ({ element }) => {
@@ -36,7 +36,11 @@ const MuiTable: FC<MuiTableProps> = ({ element }) => {
               <TableCell component="th" scope="row">
                 {body.main}
               </TableCell>
-              <TableCell align="right">{body.sub}</TableCell>
+              {body.sub.map((sub, i) => (
+                <TableCell key={i} align="right">
+                  {sub}
+                </TableCell>
+              ))}
             </TableRow>
           ))}
         </TableBody>
