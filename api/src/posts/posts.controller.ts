@@ -8,6 +8,7 @@ import {
   Delete,
   Query,
   Req,
+  Patch,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
@@ -17,6 +18,7 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { GetCurrentUser } from '../auth/get-user.decorator';
 import { User } from '../users/models/users.entity';
 import { FindPostsDto } from './dto/find-posts.dto';
+import { UpdatePostDto } from './dto/update-post.dto';
 
 @Controller('posts')
 export class PostsController {
@@ -43,6 +45,16 @@ export class PostsController {
   ): Promise<boolean> {
     const user = request.user;
     return this.postsService.createPost(createPostDto, user);
+  }
+
+  @Patch('/update/:id')
+  @UseGuards(AuthGuard('jwt'))
+  updatePost(
+    @Param('id') id: number,
+    @Body() updatePostDto: UpdatePostDto,
+    @GetCurrentUser() user: User,
+  ): Promise<boolean> {
+    return this.postsService.updatePost(id, updatePostDto, user);
   }
 
   @Delete('/delete/:id')
