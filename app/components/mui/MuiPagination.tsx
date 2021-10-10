@@ -15,7 +15,7 @@ const MuiPagination: FC<MuiPaginationProps> = memo(({ count }) => {
 
   useEffect(() => {
     setTotal(Math.ceil(count / perPage))
-  }, [])
+  }, [count])
 
   return (
     <Pagination
