@@ -19,6 +19,21 @@ export class TagsRepository extends Repository<Tag> {
     return tags;
   }
 
+  async findTagsByPostId(postId: number): Promise<Tag[]> {
+    const tags = await this.createQueryBuilder('tags')
+      .where('tags.postId = :postId', { postId })
+      .getMany();
+
+    if (!tags)
+      throw new NotFoundException(`postId: ${postId}のtagは存在しません`);
+
+    try {
+      return tags;
+    } catch (e) {
+      throw new InternalServerErrorException();
+    }
+  }
+
   async getCountTags(
     findTagsDto: FindTagsDto,
     userId: number,
@@ -51,6 +66,15 @@ export class TagsRepository extends Repository<Tag> {
       return tag;
     } catch (e) {
       throw new InternalServerErrorException();
+    }
+  }
+
+  async deleteTagByPostId(postId: number): Promise<boolean> {
+    const target = await this.findTagsByPostId(postId);
+
+    if (target.length > 0) {
+      target.map(async (elm) => await this.delete({ id: elm.id }));
+      return true;
     }
   }
 

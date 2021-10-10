@@ -13,6 +13,11 @@ export class TagsController {
     return this.tagsService.findAllTagsByUserId(userId);
   }
 
+  @Get('/post/:id')
+  findTagsByPostId(@Param('id') postId: number): Promise<Tag[]> {
+    return this.tagsService.findTagsByPostId(postId);
+  }
+
   @Get('/count/:id')
   getCountTags(
     @Query() findTagsDto: FindTagsDto,
