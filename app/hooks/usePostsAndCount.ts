@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { IPost } from '../src/types/post'
-import { fetchPosts, fetchSearchResult } from '../src/api/post'
+import { fetchPostsByTag, fetchSearchResult } from '../src/api/post'
 
 type UsePostsAndCountReturnType = {
   posts: IPost[]
@@ -17,7 +17,7 @@ export const usePostsAndCount = (
   useEffect(() => {
     ;(async () => {
       if (category === 'tag') {
-        const res = await fetchPosts(query)
+        const res = await fetchPostsByTag(query)
         setPosts(res.data[0])
         setCount(res.data[1])
       }

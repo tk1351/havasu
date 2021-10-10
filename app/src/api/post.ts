@@ -6,7 +6,14 @@ export const registerPost = async (data: PostInputs) => {
   return await api.post<boolean>('/posts/create', data)
 }
 
-export const fetchPosts = async (tag: string) => {
+// pagination時に使うため
+export const fetchPosts = async (page: number) => {
+  const pageOffset = (page - 1) * 10
+  const url = `/posts/${authorId}?offset=${pageOffset}&limit=${limit}`
+  return await api.get<[IPost[], number]>(url)
+}
+
+export const fetchPostsByTag = async (tag: string) => {
   const url = `/posts/${authorId}?offset=${offset}&limit=${limit}&tag=${encodeURI(
     tag
   )}`
