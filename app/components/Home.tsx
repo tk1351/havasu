@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from 'react'
 import { Grid } from '@mui/material'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilState } from 'recoil'
 import { IPost } from '../src/types/post'
 import PostItem from './posts/PostItem'
 import Tags from './tags/Tags'
@@ -18,11 +18,12 @@ type HomeProps = {
 
 const Home: FC<HomeProps> = ({ data, postCount, tags }) => {
   const [posts, setPosts] = useRecoilState(postsState)
-  const page = useRecoilValue(pageState)
+  const [page, setPage] = useRecoilState(pageState)
 
   // レンダリング時のみSSGで取得したdataをstateへ保存する
   useEffect(() => {
     setPosts(data)
+    setPage(1) // ページ遷移後にHomeに戻るとpageが元の値のままのためリセットする
   }, [])
 
   // ページネーション利用時にpostsをstateへ保存する
