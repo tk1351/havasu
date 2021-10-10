@@ -37,6 +37,9 @@ const Navbar: FC<NavbarProps> = () => {
 
   const authorLinks = (
     <div css={links}>
+      <Link href="/admin">
+        <a>Admin</a>
+      </Link>
       <Link href="/posts/new">
         <a>Add new</a>
       </Link>
