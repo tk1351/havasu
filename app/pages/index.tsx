@@ -8,7 +8,7 @@ import { offset, limit } from '../src/api/api'
 import { IPost } from '../src/types/post'
 import { CountTag } from '../src/types/tag'
 
-const index: NextPage<Props> = ({ posts, postCount, tags }) => {
+const index: NextPage<Props> = ({ data, postCount, tags }) => {
   return (
     <div>
       <Head>
@@ -17,7 +17,7 @@ const index: NextPage<Props> = ({ posts, postCount, tags }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar />
-      <Home posts={posts} postCount={postCount} tags={tags} />
+      <Home data={data} postCount={postCount} tags={tags} />
       <footer>
         <a
           href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
@@ -44,7 +44,7 @@ export const getStaticProps = async () => {
 
   return {
     props: {
-      posts: postRes.data[0],
+      data: postRes.data[0],
       postCount: postRes.data[1],
       tags: tagRes.data,
     },
