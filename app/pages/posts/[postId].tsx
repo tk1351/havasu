@@ -9,12 +9,14 @@ import axios from 'axios'
 import { IPost } from '../../src/types/post'
 import Navbar from '../../components/common/Navbar'
 import Post from '../../components/posts/Post'
+import { limit } from '../../src/api/api'
+import { CountTag } from '../../src/types/tag'
 
-const postId: NextPage<Props> = ({ post }) => {
+const postId: NextPage<Props> = ({ post, tags }) => {
   return (
     <>
       <Navbar />
-      <Post post={post} />
+      <Post post={post} tagColumn={tags} />
     </>
   )
 }
@@ -31,14 +33,23 @@ export const getStaticPaths: GetStaticPaths = async () => {
   return { paths, fallback: false }
 }
 
-export const getStaticProps: GetStaticProps<{ post: IPost }> = async (ctx) => {
-  const url = `${process.env.API_URL}/posts/get-one/${Number(
+export const getStaticProps: GetStaticProps<{
+  post: IPost
+  tags: CountTag[]
+}> = async (ctx) => {
+  const postUrl = `${process.env.API_URL}/posts/get-one/${Number(
     ctx.params?.postId
   )}`
-  const res = await axios.get<IPost>(url)
+  const tagUrl = `${process.env.API_URL}/tags/count/${process.env.AUTHOR_ID}?limit=${limit}`
+
+  const postRes = await axios.get<IPost>(postUrl)
+  const tagRes = await axios.get<CountTag[]>(tagUrl)
 
   return {
-    props: { post: res.data },
+    props: {
+      post: postRes.data,
+      tags: tagRes.data,
+    },
   }
 }
 
