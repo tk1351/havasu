@@ -4,13 +4,10 @@ import { Delete } from '@mui/icons-material'
 import { deleteButton } from '../../styles/components/mui/muiDelete.styles'
 
 type MuiDeleteProps = {
-  postId: number
+  onClick: () => void
 }
 
-const MuiDelete: FC<MuiDeleteProps> = ({ postId }) => {
-  const onClick = () => {
-    console.log('postId', postId)
-  }
+const MuiDelete: FC<MuiDeleteProps> = ({ onClick }) => {
   return (
     <IconButton onClick={onClick}>
       <Delete css={deleteButton} />
