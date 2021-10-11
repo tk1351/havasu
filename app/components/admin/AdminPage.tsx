@@ -3,17 +3,15 @@ import { IPost } from '../../src/types/post'
 import AdminPostTable from './AdminPostTable'
 
 type AdminPageProps = {
-  posts: IPost[]
-  count: number
+  data: IPost[]
+  postCount: number
 }
 
-const AdminPage: FC<AdminPageProps> = ({ posts, count }) => {
-  console.log(posts, count)
-
+const AdminPage: FC<AdminPageProps> = ({ data, postCount }) => {
   return (
     <div>
       <h1>Admin</h1>
-      <AdminPostTable posts={posts} />
+      <AdminPostTable data={data} postCount={postCount} />
     </div>
   )
 }

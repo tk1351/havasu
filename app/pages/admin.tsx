@@ -7,12 +7,12 @@ import AdminPage from '../components/admin/AdminPage'
 import { offset, limit } from '../src/api/api'
 import { IPost } from '../src/types/post'
 
-const admin: NextPage<Props> = ({ posts, count }) => {
+const admin: NextPage<Props> = ({ data, postCount }) => {
   useRequireLogin()
   return (
     <>
       <Navbar />
-      <AdminPage posts={posts} count={count} />
+      <AdminPage data={data} postCount={postCount} />
     </>
   )
 }
@@ -24,8 +24,8 @@ export const getStaticProps = async () => {
 
   return {
     props: {
-      posts: res.data[0],
-      count: res.data[1],
+      data: res.data[0],
+      postCount: res.data[1],
     },
   }
 }
