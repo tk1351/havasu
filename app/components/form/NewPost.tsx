@@ -1,4 +1,5 @@
 import React, { FC, ChangeEvent, useState } from 'react'
+import { useRouter } from 'next/router'
 import {
   useForm,
   SubmitHandler,
@@ -25,6 +26,8 @@ const defaultValues: PostInputs = {
 }
 
 const NewPost: FC<NewPostProps> = () => {
+  const router = useRouter()
+
   const [markdown, setMarkdown] = useState<string>('')
 
   const setAlert = useSetRecoilState(alertState)
@@ -48,9 +51,11 @@ const NewPost: FC<NewPostProps> = () => {
   }
 
   const onSubmit: SubmitHandler<PostInputs> = async (data) => {
+    const successMessage = '投稿が完了しました'
     try {
-      const res = await registerPost(data)
-      openAlert(String(res.data), 'succeeded')
+      await registerPost(data)
+      openAlert(successMessage, 'succeeded')
+      await router.push('/')
     } catch (e) {
       openAlert(e.response.data.message, 'failed')
     }
