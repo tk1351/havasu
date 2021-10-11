@@ -4,13 +4,10 @@ import { Edit } from '@mui/icons-material'
 import { editButton } from '../../styles/components/mui/muiEdit.styles'
 
 type MuiEditProps = {
-  postId: number
+  onClick: () => void
 }
 
-const MuiEdit: FC<MuiEditProps> = ({ postId }) => {
-  const onClick = () => {
-    console.log('postId', postId)
-  }
+const MuiEdit: FC<MuiEditProps> = ({ onClick }) => {
   return (
     <IconButton onClick={onClick}>
       <Edit css={editButton} />
