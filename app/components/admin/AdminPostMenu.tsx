@@ -1,4 +1,5 @@
 import React, { FC } from 'react'
+import { useRouter } from 'next/router'
 import MuiEdit from '../mui/MuiEdit'
 import MuiDelete from '../mui/MuiDelete'
 
@@ -7,9 +8,14 @@ type AdminPostMenuProps = {
 }
 
 const AdminPostMenu: FC<AdminPostMenuProps> = ({ postId }) => {
+  const router = useRouter()
+
+  const transitionToUpdate = () => {
+    router.push(`/posts/${postId}/update`)
+  }
   return (
     <>
-      <MuiEdit postId={postId} />
+      <MuiEdit onClick={transitionToUpdate} />
       <MuiDelete postId={postId} />
     </>
   )
