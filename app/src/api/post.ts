@@ -10,6 +10,10 @@ export const registerPost = async (data: PostInputs) => {
   return await api.post<boolean>('/posts/create', data)
 }
 
+export const updatePost = async (data: PostInputs, id: number) => {
+  return await api.patch<boolean>(`/posts/update/${id}`, data)
+}
+
 // pagination時に使うため
 export const fetchPosts = async (page: number) => {
   const pageOffset = getPageOffset(page)
